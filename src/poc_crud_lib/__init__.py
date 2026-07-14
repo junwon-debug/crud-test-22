@@ -18,7 +18,7 @@ def create(file_path: str, data: dict) -> dict:
     records = _load(file_path)
 
     next_id = max((r["id"] for r in records), default=0) + 1
-    record = {"id": next_id, **data}
+    record = {**data, "id": next_id}
     records.append(record)
     _save(file_path, records)
 

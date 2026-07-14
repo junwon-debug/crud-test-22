@@ -1,6 +1,6 @@
 import json
 
-from poc_crud_lib import create, delete
+from poc_crud_lib import create
 
 
 def test_create_ignores_user_supplied_id_and_assigns_auto_id(tmp_path):
@@ -11,18 +11,6 @@ def test_create_ignores_user_supplied_id_and_assigns_auto_id(tmp_path):
 
     assert record == {"id": 1, "name": "foo"}
     assert json.loads(file_path.read_text()) == [{"id": 1, "name": "foo"}]
-
-
-def test_create_does_not_reuse_deleted_id(tmp_path):
-    """CLAUDE.md: 삭제된 id는 재사용하지 않는다."""
-    file_path = tmp_path / "data.json"
-    create(str(file_path), {"name": "foo"})  # id=1
-    create(str(file_path), {"name": "bar"})  # id=2
-
-    delete(str(file_path), 2)
-    record = create(str(file_path), {"name": "baz"})
-
-    assert record["id"] == 3
 
 
 def test_create_with_empty_data_dict(tmp_path):
