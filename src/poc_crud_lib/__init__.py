@@ -46,3 +46,13 @@ def update(file_path: str, id: int, fields: dict) -> dict:
             return record
 
     raise ValueError(f"record with id {id} not found")
+
+
+def delete(file_path: str, id: int) -> None:
+    records = _load(file_path)
+    remaining = [record for record in records if record["id"] != id]
+
+    if len(remaining) == len(records):
+        raise ValueError(f"record with id {id} not found")
+
+    _save(file_path, remaining)
